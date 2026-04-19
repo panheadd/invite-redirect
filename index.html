@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Opening App...</title>
+</head>
+<body>
+    <h3>Opening app...</h3>
+
+    <script>
+        function getToken() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("token");
+        }
+
+        function openApp(token) {
+            // Unity custom scheme
+            const appLink = `gbot://invite?token=${token}`;
+
+            window.location.href = appLink;
+
+            // fallback to store after 2 sec
+            setTimeout(() => {
+                window.location.href = "https://play.google.com/store/apps/details?id=dev.gbot.bubble";
+            }, 2000);
+        }
+
+        const token = getToken();
+
+        if (token) {
+            openApp(token);
+        } else {
+            document.body.innerHTML = "Invalid invite link";
+        }
+    </script>
+</body>
+</html>
