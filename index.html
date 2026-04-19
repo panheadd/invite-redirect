@@ -8,29 +8,25 @@
     <h3>Opening app...</h3>
 
     <script>
-        function getToken() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("token");
-        }
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
 
-        function openApp(token) {
-            // Unity custom scheme
-            const appLink = `gbot://invite?token=${token}`;
-
-            window.location.href = appLink;
-
-            // fallback to store after 2 sec
-            setTimeout(() => {
-                window.location.href = "https://play.google.com/store/apps/details?id=dev.gbot.bubble";
-            }, 2000);
-        }
-
-        const token = getToken();
-
-        if (token) {
-            openApp(token);
-        } else {
+        if (!token) {
             document.body.innerHTML = "Invalid invite link";
+        } else {
+
+            const appLink = `gbot://invite?token=${token}`;
+            const storeLink = "https://play.google.com/store/apps/details?id=dev.gbot.bubble";
+
+            // Android routing stabil olması için delay
+            setTimeout(() => {
+                window.location.href = appLink;
+            }, 200);
+
+            // fallback
+            setTimeout(() => {
+                window.location.href = storeLink;
+            }, 2000);
         }
     </script>
 </body>
